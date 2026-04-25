@@ -21,7 +21,7 @@ type Language = 'fr' | 'en';
 const translations = {
   fr: {
     title: "ShadowScan v2.0",
-    subtitle: "COUCHE OSINT // IDENTITÉ MASQUÉE",
+    subtitle: "COUCHE OSINT // IDENTITÉ CYBER",
     encryption: "CHIFFREMENT: AES-256",
     nodes: "NŒUDS: 14,892 ACTIFS",
     status: "ÉTAT: ",
@@ -43,6 +43,7 @@ const translations = {
     socialHeader: "GRAPH_RÉSEAUX_SOCIAUX",
     lastSeenNetLabel: "VU_RÉSEAU",
     lastSeenCamLabel: "VU_CAMÉRA",
+    surveillanceHeader: "CAPTURES_SURVEILLANCE",
     ipLabel: "ADRESSE_IP",
     host: "HÔTE: NŒUD_AIS_01",
     authOnly: "ACCÈS AUTORISÉ UNIQUEMENT",
@@ -58,14 +59,13 @@ const translations = {
       "MOTEUR OSINT SHADOWSCAN v2.0.4",
       "ÉTABLISSEMENT DU TUNNEL SÉCURISÉ (ONION-v3)... FAIT",
       "CHARGEMENT INDEX_BREACH_DB [3.4PB]... CHARGÉ",
-      "NETTOYAGE EMPREINTE LOCALE... OK",
       "SYSTÈME INITIALISÉ. EN ATTENTE DE COMMANDE...",
       "TAPEZ 'help' POUR LES COMMANDES."
     ]
   },
   en: {
     title: "ShadowScan v2.0",
-    subtitle: "OSINT LAYER // IDENTITY MASKED",
+    subtitle: "OSINT LAYER // CYBER IDENTITY",
     encryption: "ENCRYPTION: AES-256",
     nodes: "NODES: 14,892 ACTIVE",
     status: "STATUS: ",
@@ -87,6 +87,7 @@ const translations = {
     socialHeader: "SOCIAL_GRAPH_NODES",
     lastSeenNetLabel: "LAST_SEEN_NET",
     lastSeenCamLabel: "LAST_SEEN_CAM",
+    surveillanceHeader: "SURVEILLANCE_CAPTURES",
     ipLabel: "IP_ADDRESS",
     host: "HOST: AIS_NODE_01",
     authOnly: "AUTHORIZED ACCESS ONLY",
@@ -102,7 +103,6 @@ const translations = {
       "SHADOWSCAN OSINT ENGINE v2.0.4",
       "ESTABLISHING SECURE TUNNEL (ONION-v3)... DONE",
       "LOADING BREACH_DB_INDEX [3.4PB]... LOADED",
-      "SCRUBBING LOCAL FINGERPRINT... OK",
       "SYSTEM INITIALIZED. WAITING FOR COMMAND...",
       "TYPE 'help' FOR AVAILABLE COMMANDS."
     ]
@@ -366,10 +366,19 @@ export default function App() {
                 <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} className="p-5 flex flex-col h-full overflow-y-auto custom-scrollbar">
                   <div className="mb-6 flex gap-4">
                     <div className="w-20 h-24 bg-terminal-primary/10 border border-terminal-primary/30 relative flex items-center justify-center overflow-hidden grayscale contrast-125">
+                      {activeReport.visualData?.profileImageUrl ? (
+                        <img 
+                          src={activeReport.visualData.profileImageUrl} 
+                          alt="Profile" 
+                          className="w-full h-full object-cover opacity-60"
+                          referrerPolicy="no-referrer"
+                        />
+                      ) : (
+                        <User className="w-10 h-10 text-terminal-primary/20" />
+                      )}
                       <div className="absolute inset-x-0 top-0 h-4 bg-terminal-primary/20 flex items-center justify-center">
                         <span className="text-[6px] tracking-widest font-black uppercase">Classified</span>
                       </div>
-                      <User className="w-10 h-10 text-terminal-primary/20" />
                       <div className="absolute inset-0 border-2 border-dashed border-terminal-primary/5 pointer-events-none" />
                       <div className="absolute bottom-1 right-1 w-2 h-2 bg-green-500/50 rounded-full animate-pulse" />
                     </div>
@@ -419,6 +428,34 @@ export default function App() {
                         </div>
                       </div>
                     )}
+                    {/* Surveillance Images */}
+                    {activeReport.visualData?.surveillanceImageUrl && (
+                      <div className="space-y-3">
+                        <h4 className="text-[9px] text-terminal-primary/30 uppercase font-black border-b border-terminal-primary/10 pb-1">{t.surveillanceHeader}</h4>
+                        <div className="relative group">
+                          <div className="aspect-video bg-black border border-terminal-primary/20 overflow-hidden relative">
+                            <img 
+                              src={activeReport.visualData.surveillanceImageUrl} 
+                              alt="Surveillance" 
+                              className="w-full h-full object-cover opacity-50 grayscale hover:opacity-80 transition-opacity"
+                              referrerPolicy="no-referrer"
+                            />
+                            <div className="absolute top-2 left-2 flex items-center gap-1.5">
+                              <div className="w-1.5 h-1.5 bg-red-500 rounded-full animate-ping" />
+                              <span className="text-[8px] font-bold text-red-500 uppercase tracking-tighter">REC // LIVE_FEED</span>
+                            </div>
+                            <div className="absolute bottom-2 right-2 text-[8px] text-terminal-primary/60 font-mono">
+                              {activeReport.visualData.lastKnownCctvLocation || 'COORD_REDACTED'}
+                            </div>
+                            <div className="absolute inset-0 pointer-events-none">
+                              <div className="w-full h-px bg-terminal-primary/10 absolute top-1/2 -translate-y-1/2" />
+                              <div className="h-full w-px bg-terminal-primary/10 absolute left-1/2 -translate-x-1/2" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    
                     <div className="space-y-3">
                       <h4 className="text-[9px] text-terminal-primary/30 uppercase font-black border-b border-terminal-primary/10 pb-1">{t.footprint}</h4>
                       <ul className="space-y-2 text-[11px] leading-snug text-terminal-primary/80">

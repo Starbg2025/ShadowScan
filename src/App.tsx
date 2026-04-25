@@ -43,7 +43,8 @@ const translations = {
     socialHeader: "GRAPH_RÉSEAUX_SOCIAUX",
     lastSeenNetLabel: "VU_RÉSEAU",
     lastSeenCamLabel: "VU_CAMÉRA",
-    surveillanceHeader: "CAPTURES_SURVEILLANCE",
+    videoHeader: "ANALYSE_FLUX_VIDÉO",
+    videoContextLabel: "CONTEXTE_VIDÉO",
     ipLabel: "ADRESSE_IP",
     host: "HÔTE: NŒUD_AIS_01",
     authOnly: "ACCÈS AUTORISÉ UNIQUEMENT",
@@ -88,6 +89,8 @@ const translations = {
     lastSeenNetLabel: "LAST_SEEN_NET",
     lastSeenCamLabel: "LAST_SEEN_CAM",
     surveillanceHeader: "SURVEILLANCE_CAPTURES",
+    videoHeader: "VIDEO_STREAM_ANALYSIS",
+    videoContextLabel: "VIDEO_CONTEXT",
     ipLabel: "IP_ADDRESS",
     host: "HOST: AIS_NODE_01",
     authOnly: "AUTHORIZED ACCESS ONLY",
@@ -428,30 +431,28 @@ export default function App() {
                         </div>
                       </div>
                     )}
-                    {/* Surveillance Images */}
-                    {activeReport.visualData?.surveillanceImageUrl && (
+                    {/* Video Tracking */}
+                    {activeReport.visualData?.recentVideoUrl && (
                       <div className="space-y-3">
-                        <h4 className="text-[9px] text-terminal-primary/30 uppercase font-black border-b border-terminal-primary/10 pb-1">{t.surveillanceHeader}</h4>
-                        <div className="relative group">
-                          <div className="aspect-video bg-black border border-terminal-primary/20 overflow-hidden relative">
-                            <img 
-                              src={activeReport.visualData.surveillanceImageUrl} 
-                              alt="Surveillance" 
-                              className="w-full h-full object-cover opacity-50 grayscale hover:opacity-80 transition-opacity"
-                              referrerPolicy="no-referrer"
-                            />
-                            <div className="absolute top-2 left-2 flex items-center gap-1.5">
-                              <div className="w-1.5 h-1.5 bg-red-500 rounded-full animate-ping" />
-                              <span className="text-[8px] font-bold text-red-500 uppercase tracking-tighter">REC // LIVE_FEED</span>
-                            </div>
-                            <div className="absolute bottom-2 right-2 text-[8px] text-terminal-primary/60 font-mono">
-                              {activeReport.visualData.lastKnownCctvLocation || 'COORD_REDACTED'}
-                            </div>
-                            <div className="absolute inset-0 pointer-events-none">
-                              <div className="w-full h-px bg-terminal-primary/10 absolute top-1/2 -translate-y-1/2" />
-                              <div className="h-full w-px bg-terminal-primary/10 absolute left-1/2 -translate-x-1/2" />
-                            </div>
+                        <h4 className="text-[9px] text-terminal-primary/30 uppercase font-black border-b border-terminal-primary/10 pb-1">{t.videoHeader}</h4>
+                        <div className="bg-terminal-primary/5 p-3 border border-terminal-primary/20 rounded">
+                          <div className="flex items-center gap-3 mb-2">
+                             <div className="w-2 h-2 bg-red-600 animate-pulse rounded-full" />
+                             <span className="text-[10px] font-bold text-white uppercase">Detected Stream</span>
                           </div>
+                          <a 
+                            href={activeReport.visualData.recentVideoUrl} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-[10px] text-blue-400 hover:underline break-all mb-2 block"
+                          >
+                            {activeReport.visualData.recentVideoUrl}
+                          </a>
+                          {activeReport.visualData.videoContext && (
+                            <div className="text-[9px] text-terminal-primary/70 italic border-l border-terminal-primary/30 pl-2">
+                              {t.videoContextLabel}: {activeReport.visualData.videoContext}
+                            </div>
+                          )}
                         </div>
                       </div>
                     )}

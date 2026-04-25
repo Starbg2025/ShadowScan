@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Share+Tech+Mono&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-terminal: "Share Tech Mono", monospace;
+  
+  --color-terminal-primary: #00f2ff;
+  --color-terminal-dim: #00f2ff22;
+  --color-terminal-bg: #020408;
+}
+
+@layer base {
+  body {
+    @apply bg-terminal-bg text-terminal-primary font-terminal selection:bg-terminal-primary selection:text-terminal-bg;
+    margin: 0;
+    overflow: hidden;
+  }
+}
+
+@layer components {
+  .terminal-window {
+    @apply relative border border-terminal-primary/20 bg-terminal-primary/[0.03] shadow-inner overflow-hidden rounded-lg;
+  }
+  
+  .scanline {
+    width: 100%;
+    height: 100px;
+    z-index: 10;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(0, 242, 255, 0.05) 50%, rgba(0, 0, 0, 0) 100%);
+    opacity: 0.1;
+    position: absolute;
+    bottom: 100%;
+    animation: scanline 10s linear infinite;
+  }
+
+  .dot-pattern {
+    position: absolute;
+    inset: 0;
+    opacity: 0.1;
+    pointer-events: none;
+    background-image: radial-gradient(#00f2ff 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+}
+
+@keyframes scanline {
+  0% { bottom: 100%; }
+  100% { bottom: -100px; }
+}
+
+@keyframes flicker {
+  0% { opacity: 0.95; }
+  5% { opacity: 0.85; }
+  10% { opacity: 0.95; }
+  15% { opacity: 0.9; }
+  25% { opacity: 0.95; }
+  30% { opacity: 1; }
+  100% { opacity: 0.95; }
+}
+
+.flicker {
+  animation: flicker 0.15s infinite;
+}
+
+.crt::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  z-index: 2;
+  background-size: 100% 2px, 3px 100%;
+  pointer-events: none;
+}
+

@@ -1,0 +1,6 @@
+{
+  "name": "ShadowScan OSINT Dashboard",
+  "description": "A futuristic terminal-based OSINT simulation tool. Search for entities, scan the deep web (simulated), and generate technical intelligence dossiers powered by AI.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
